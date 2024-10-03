@@ -32,6 +32,10 @@ function formatDay(dateStr) {
   }).format(new Date(dateStr));
 }
 
+function getFlagImage(countryCode) {
+  return `https://flagcdn.com/w320/${countryCode.toLowerCase()}.png`;
+}
+
 class App extends React.Component {
   state = {
     location: "",
@@ -58,8 +62,21 @@ class App extends React.Component {
       const { latitude, longitude, timezone, name, country_code } =
         geoData.results.at(0);
 
+      console.log(`Country Code: ${country_code}`); // Debugging output
+      const flag = convertToFlag(country_code);
+      console.log(`Flag: ${flag}`); // Debugging output
+
       this.setState({
-        displayLocation: `${name} ${convertToFlag(country_code)}`,
+        displayLocation: (
+          <span>
+            {name}{" "}
+            <img
+              src={getFlagImage(country_code)}
+              alt={country_code}
+              style={{ width: "30px", height: "20px" }}
+            />
+          </span>
+        ),
       });
 
       // 2) Getting actual weather
